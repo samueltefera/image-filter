@@ -38,6 +38,20 @@ import { Router ,Request, Response } from 'express';
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
+  
+  app.get( "/filteredimage" , async (req: Request, res: Response) => {
+    const imageToBeFiltered = req.query.image_url.toString()
+    if (!imageToBeFiltered) {
+      res.status(400).send('Imag url is required');
+    }
+
+    const filteredImage = await filterImageFromURL(imageToBeFiltered);
+
+    res.status(200).sendFile(filteredImage, () => {
+      deleteLocalFiles([filteredImage]);
+
+    });
+  });
 
   // Start the Server
   app.listen( port, () => {
