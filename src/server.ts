@@ -40,12 +40,12 @@ import { Router ,Request, Response } from 'express';
   
   
   app.get( "/filteredimage" , async (req: Request, res: Response) => {
-    const imageToBeFiltered = req.query.image_url.toString()
+    const imageToBeFiltered: string = req.query.image_url.toString()
     if (!imageToBeFiltered) {
       res.status(400).send('Imag url is required');
     }
 
-    const filteredImage = await filterImageFromURL(imageToBeFiltered);
+    const filteredImage: string = await filterImageFromURL(imageToBeFiltered);
 
     res.status(200).sendFile(filteredImage, () => {
       deleteLocalFiles([filteredImage]);
